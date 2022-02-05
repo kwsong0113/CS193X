@@ -9,8 +9,10 @@
 
 class App {
   constructor() {
+    this.onMenuClicked = this.onMenuClicked.bind(this);
+
     const menuElement = document.querySelector('#menu');
-    this.menu = new MenuScreen(menuElement);
+    this.menu = new MenuScreen(menuElement, this.onMenuClicked);
 
     const mainElement = document.querySelector('#main');
     this.flashcards = new FlashcardScreen(mainElement);
@@ -25,5 +27,10 @@ class App {
     // Uncomment this pair of lines to see the "results" screen:
     // this.menu.hide();
     // this.results.show();
+  }
+
+  onMenuClicked() {
+    this.menu.hide();
+    this.flashcards.show();
   }
 }

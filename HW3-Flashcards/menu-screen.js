@@ -7,8 +7,22 @@
 // - Adding additional fields
 
 class MenuScreen {
-  constructor(containerElement) {
+  constructor(containerElement, onMenuClicked) {
     this.containerElement = containerElement;
+    this.choiceContainer = document.querySelector('#choices');
+    this.onMenuClicked = onMenuClicked;
+
+    for (const deck of FLASHCARD_DECKS) {
+      this._addMenuItems(deck)
+    }
+  }
+
+  _addMenuItems(deck) {
+    const menuItem = document.createElement('div');
+    menuItem.textContent = deck.title;
+    menuItem.addEventListener('pointerup', this.onMenuClicked);
+
+    this.choiceContainer.appendChild(menuItem);
   }
 
   show() {
