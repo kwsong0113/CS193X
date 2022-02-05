@@ -20,7 +20,7 @@ class MenuScreen {
   _addMenuItems(deck) {
     const menuItem = document.createElement('div');
     menuItem.textContent = deck.title;
-    menuItem.addEventListener('pointerup', this.onMenuClicked);
+    menuItem.addEventListener('pointerup', () => this.onMenuClicked(deck));
 
     this.choiceContainer.appendChild(menuItem);
   }

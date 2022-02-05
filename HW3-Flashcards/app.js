@@ -29,8 +29,9 @@ class App {
     // this.results.show();
   }
 
-  onMenuClicked() {
+  onMenuClicked(deck) {
     this.menu.hide();
-    this.flashcards.show();
+    this.flashcards.show(deck);
+    console.log(deck.title);
   }
 }

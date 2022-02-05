@@ -7,8 +7,10 @@
 // - Adding additional fields
 
 class Flashcard {
-  constructor(containerElement, frontText, backText) {
+  constructor(containerElement, frontText, backText, updateScreen, showNextScreen) {
     this.containerElement = containerElement;
+    this.updateScreen = updateScreen;
+    this.showNextScreen = showNextScreen;
 
     this._flipCard = this._flipCard.bind(this);
 
@@ -16,6 +18,57 @@ class Flashcard {
     this.containerElement.append(this.flashcardElement);
 
     this.flashcardElement.addEventListener('pointerup', this._flipCard);
+
+    this.originX = null;
+    this.originY = null;
+    this.dragStarted = false;
+
+    this._onPointerdown = this._onPointerdown.bind(this);
+    this._onPointermove = this._onPointermove.bind(this);
+    this._onPointerup = this._onPointerup.bind(this);
+
+    this.containerElement.addEventListener('pointerdown', this._onPointerdown);
+    this.containerElement.addEventListener('pointermove', this._onPointermove);
+    this.containerElement.addEventListener('pointerup', this._onPointerup);
+  }
+
+  _onPointerdown(event) {
+    this.originX = event.clientX;
+    this.originY = event.clientY;
+    this.dragStarted = true;
+    event.currentTarget.setPointerCapture(event.pointerId);
+    event.currentTarget.style.transition = '';
+  }
+
+  _onPointermove(event) {
+    if (!this.dragStarted) {
+      return;
+    }
+    event.preventDefault();
+    const deltaX = event.clientX - this.originX;
+    const deltaY = event.clientY - this.originY;
+    const rotationAngle = 0.2 * deltaX;
+    event.currentTarget.style.transform = 'translate(' + deltaX + 'px, ' + deltaY + 'px) ' + 'rotate(' + rotationAngle + 'deg)';
+
+    const currentState = deltaX >= 150 ? 1 : (deltaX <= -150 ? -1 : 0);
+    this.updateScreen(currentState);
+  }
+
+  _onPointerup(event) {
+    if (!this.dragStarted) {
+      return;
+    }
+    this.dragStarted = false;
+
+    const deltaX = event.clientX - this.originX;
+    const currentState = deltaX >= 150 ? 1 : (deltaX <= -150 ? -1 : 0);
+    if (currentState == 0) {
+      this.updateScreen(currentState);
+      event.currentTarget.style.transition = '0.6s';
+      event.currentTarget.style.transform = '';
+    } else {
+      this.showNextScreen(currentState);
+    }
   }
 
   // Creates the DOM object representing a flashcard with the given
