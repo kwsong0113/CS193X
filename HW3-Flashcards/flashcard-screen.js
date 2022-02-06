@@ -11,6 +11,7 @@ class FlashcardScreen {
   constructor(containerElement, checkedAllFlashcards) {
     this.containerElement = containerElement;
     this.checkedAllFlashcards = checkedAllFlashcards;
+    this.deck = null;
     this.words = null;
     this.index = null;
     this.right = null;
@@ -33,11 +34,20 @@ class FlashcardScreen {
     this.flashcardContainer.addEventListener('pointerup', this._onPointerup);
   }
 
-  show(deck) {
-    this.containerElement.classList.remove('inactive');
+  showNew(deck) {
+    this.deck = deck;
+    this.words = Object.entries(this.deck.words);
+    this.right = 0;
+    this.show();
+  }
 
-    this.words = Object.entries(deck.words);
-    this.right = this.wrong = this.index = 0;
+  show() {
+    this.containerElement.classList.remove('inactive');
+    if (this.words.length === 0) {
+      this.words = Object.entries(this.deck.words);
+      this.right = 0;
+    }
+    this.wrong = this.index = 0;
 
     this._showNextScreen(0);
     this._updateStatus(this.right, this.wrong);
@@ -104,6 +114,8 @@ class FlashcardScreen {
   _showNextScreen(currentState) {
     if (currentState == 1) {
       this.right++;
+      this.index--;
+      this.words.splice(this.index, 1);
     } else if (currentState == -1){
       this.wrong++;
     }
@@ -113,7 +125,7 @@ class FlashcardScreen {
       const card = new Flashcard(this.flashcardContainer, this.words[this.index][0], this.words[this.index][1]);
       this.index++;
     } else {
-      this.checkedAllFlashcards();
+      this.checkedAllFlashcards(this.right, this.wrong);
     }
   }
 }

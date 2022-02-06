@@ -11,6 +11,8 @@ class App {
   constructor() {
     this.menuToFlashcard = this.menuToFlashcard.bind(this);
     this.flashcardToResult = this.flashcardToResult.bind(this);
+    this.resultToFlashcard = this.resultToFlashcard.bind(this);
+    this.resultToMenu = this.resultToMenu.bind(this);
 
     const menuElement = document.querySelector('#menu');
     this.menu = new MenuScreen(menuElement, this.menuToFlashcard);
@@ -19,24 +21,26 @@ class App {
     this.flashcards = new FlashcardScreen(mainElement, this.flashcardToResult);
 
     const resultElement = document.querySelector('#results');
-    this.results = new ResultsScreen(resultElement);
-
-    // Uncomment this pair of lines to see the "flashcard" screen:
-    // this.menu.hide();
-    // this.flashcards.show();
-
-    // Uncomment this pair of lines to see the "results" screen:
-    // this.menu.hide();
-    // this.results.show();
+    this.results = new ResultsScreen(resultElement, this.resultToFlashcard, this.resultToMenu);
   }
 
   menuToFlashcard(deck) {
     this.menu.hide();
-    this.flashcards.show(deck);
+    this.flashcards.showNew(deck);
   }
 
-  flashcardToResult() {
+  flashcardToResult(right, wrong) {
     this.flashcards.hide();
-    this.results.show();
+    this.results.show(right, wrong);
+  }
+
+  resultToFlashcard() {
+    this.results.hide();
+    this.flashcards.show();
+  }
+
+  resultToMenu() {
+    this.results.hide();
+    this.menu.show();
   }
 }
