@@ -9,13 +9,14 @@
 
 class App {
   constructor() {
-    this.onMenuClicked = this.onMenuClicked.bind(this);
+    this.menuToFlashcard = this.menuToFlashcard.bind(this);
+    this.flashcardToResult = this.flashcardToResult.bind(this);
 
     const menuElement = document.querySelector('#menu');
-    this.menu = new MenuScreen(menuElement, this.onMenuClicked);
+    this.menu = new MenuScreen(menuElement, this.menuToFlashcard);
 
     const mainElement = document.querySelector('#main');
-    this.flashcards = new FlashcardScreen(mainElement);
+    this.flashcards = new FlashcardScreen(mainElement, this.flashcardToResult);
 
     const resultElement = document.querySelector('#results');
     this.results = new ResultsScreen(resultElement);
@@ -29,9 +30,13 @@ class App {
     // this.results.show();
   }
 
-  onMenuClicked(deck) {
+  menuToFlashcard(deck) {
     this.menu.hide();
     this.flashcards.show(deck);
-    console.log(deck.title);
+  }
+
+  flashcardToResult() {
+    this.flashcards.hide();
+    this.results.show();
   }
 }
