@@ -93,6 +93,7 @@ class FlashcardScreen {
       event.currentTarget.style.transform = '';
     } else {
       event.currentTarget.style.transform = '';
+      document.body.style.backgroundColor = '#d0e6df';
       this._showNextScreen(currentState);
     }
   }
