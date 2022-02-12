@@ -10,6 +10,7 @@ class GifDisplay {
     this.gifIndex = -1;
 
     this._onJsonReady = this._onJsonReady.bind(this);
+    this.showDifferentGif = this.showDifferentGif.bind(this);
   }
 
   setTheme(theme) {
@@ -20,10 +21,10 @@ class GifDisplay {
 
   _onJsonReady(json) {
     this.gifDatas = json.data;
-    this._showDifferentGif();
+    this.showDifferentGif();
   }
 
-  _showDifferentGif() {
+  showDifferentGif() {
     let newGifIndex = null;
     do {
       newGifIndex = Math.floor(Math.random() * this.gifDatas.length);

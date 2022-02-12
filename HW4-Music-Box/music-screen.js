@@ -16,12 +16,23 @@ class MusicScreen {
     const gifDisplayElement = document.querySelector('#gif-display');
     this.gifDisplay = new GifDisplay(gifDisplayElement);
 
-    this.playButton = new PlayButton();
+    const playButtonElement = document.querySelector('footer img');
+    this.playButton = new PlayButton(playButtonElement, (state) => {
+      if (state) {
+        this.audioPlayer.pause();
+      } else {
+        this.audioPlayer.play();
+      }
+    });
   }
   // TODO(you): Add methods as necessary.
   show(source) {
     this.containerElement.classList.remove('inactive');
     this.gifDisplay.setTheme(source.theme);
+
+    this.audioPlayer.setSong(source.song);
+    this.audioPlayer.setKickCallback(() => { console.log('kick!'); this.gifDisplay.showDifferentGif(); });
+    this.audioPlayer.play();
   }
 
   hide() {
