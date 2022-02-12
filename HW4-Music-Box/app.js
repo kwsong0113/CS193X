@@ -5,8 +5,17 @@
 class App {
   constructor() {
     // TODO(you): Implement the constructor and add fields as necessary.
+    this.menuToMusic = this.menuToMusic.bind(this);
+
     const menuElement = document.querySelector('#menu');
-    const menuScreen = new MenuScreen(menuElement);
+    this.menuScreen = new MenuScreen(menuElement, this.menuToMusic);
+
+    const musicElement = document.querySelector('#music');
+    this.musicScreen = new MusicScreen(musicElement);
   }
   // TODO(you): Add methods as necessary.
+  menuToMusic() {
+    this.menuScreen.hide();
+    this.musicScreen.show();
+  }
 }

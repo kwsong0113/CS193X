@@ -6,9 +6,10 @@ const SONG_CHOICES_URL = "https://yayinternet.github.io/hw4-music/songs.json";
 const PREDEFINED_THEMES = ['candy', 'charlie brown', 'computers', 'dance', 'donuts', 'hello kitty', 'flowers', 'nature', 'turtles', 'space'];
 
 class MenuScreen {
-  constructor(containerElement) {
+  constructor(containerElement, onMenuSubmit) {
     // TODO(you): Implement the constructor and add fields as necessary.
     this.containerElement = containerElement;
+    this.onMenuSubmit = onMenuSubmit;
 
     this.selectorContainer = document.querySelector('#song-selector');
     this.themeInput = document.querySelector('#query-input');
@@ -21,11 +22,20 @@ class MenuScreen {
   }
 
   // TODO(you): Add methods as necessary.
+  show() {
+    this.containerElement.classList.remove('inactive');
+  }
+
+  hide() {
+    this.containerElement.classList.add('inactive');
+  }
+
   _onSubmit(event) {
     event.preventDefault();
     const index = this.selectorContainer.selectedIndex;
     console.log(this.selectorContainer.options[index].value);
     console.log(this.themeInput.value);
+    this.onMenuSubmit();
   }
 
   _fetchSongs() {

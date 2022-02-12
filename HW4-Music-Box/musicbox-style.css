@@ -1,3 +1,31 @@
 /*
 TODO(you): Write any additional styles you need here.
 */
+#music {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+#gif-display {
+  background-color: grey;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  flex-grow: 1;
+  width: 100%;
+}
+
+#music footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+  width: 100%;
+}
+
+#music footer img {
+  width: 60px;
+  height: 60px;
+}
