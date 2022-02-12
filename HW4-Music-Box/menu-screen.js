@@ -33,9 +33,11 @@ class MenuScreen {
   _onSubmit(event) {
     event.preventDefault();
     const index = this.selectorContainer.selectedIndex;
-    console.log(this.selectorContainer.options[index].value);
-    console.log(this.themeInput.value);
-    this.onMenuSubmit();
+    const result = {
+      "song": this.songs[this.selectorContainer.options[index].value].songUrl,
+      "theme": this.themeInput.value
+    };
+    this.onMenuSubmit(result);
   }
 
   _fetchSongs() {

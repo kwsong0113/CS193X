@@ -14,8 +14,8 @@ class App {
     this.musicScreen = new MusicScreen(musicElement);
   }
   // TODO(you): Add methods as necessary.
-  menuToMusic() {
+  menuToMusic(menuResult) {
     this.menuScreen.hide();
-    this.musicScreen.show();
+    this.musicScreen.show(menuResult);
   }
 }

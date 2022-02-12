@@ -11,10 +11,17 @@ class MusicScreen {
   constructor(containerElement) {
     // TODO(you): Implement the constructor and add fields as necessary.
     this.containerElement = containerElement;
+    this.audioPlayer = new AudioPlayer();
+
+    const gifDisplayElement = document.querySelector('#gif-display');
+    this.gifDisplay = new GifDisplay(gifDisplayElement);
+
+    this.playButton = new PlayButton();
   }
   // TODO(you): Add methods as necessary.
-  show() {
+  show(source) {
     this.containerElement.classList.remove('inactive');
+    this.gifDisplay.setTheme(source.theme);
   }
 
   hide() {
