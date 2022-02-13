@@ -1,8 +1,10 @@
 // NOTE: We are expecting you to *create* an AudioPlayer, but we are *not*
 // expecting you to modify the contents of this file.
 class AudioPlayer {
-  constructor() {
+  constructor(onLoad) {
     this._onKickCallback = this._onKickCallback.bind(this);
+
+    this.onLoad = onLoad;
 
     this.lastKickTime = -1;
 
@@ -18,9 +20,11 @@ class AudioPlayer {
     let audio = new Audio();
     audio.crossOrigin = 'anonymous';
     audio.loop = 'true';
+    console.log('Start loading song');
     audio.src = songUrl;
     this.dancer.pause();
     this.dancer.load(audio);
+    audio.addEventListener('canplaythrough', this.onLoad);
   }
 
   play() {

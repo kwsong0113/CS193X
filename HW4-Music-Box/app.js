@@ -22,6 +22,8 @@ class App {
   onReturn(success) {
     if (success) {
       this.menuScreen.hide();
+      const loading = document.querySelector('#loading');
+      loading.classList.toggle('inactive');
     } else {
       this.menuScreen.displayErrorMessage();
     }

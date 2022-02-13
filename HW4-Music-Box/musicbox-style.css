@@ -45,3 +45,14 @@ TODO(you): Write any additional styles you need here.
   width: 60px;
   height: 60px;
 }
+
+#loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  color: #e2e2e2;
+  font-size: 2em;
+  font-style: italic;
+}

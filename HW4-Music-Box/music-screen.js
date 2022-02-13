@@ -10,14 +10,17 @@
 class MusicScreen {
   constructor(containerElement, onEndFetching) {
     // TODO(you): Implement the constructor and add fields as necessary.
-    this.showAfterFetching = this.showAfterFetching.bind(this);
+    this.onReadyToLoadImages = this.onReadyToLoadImages.bind(this);
+    this.onReadyToLoadAudio = this.onReadyToLoadAudio.bind(this);
+    this.onReadyToPlay = this.onReadyToPlay.bind(this);
 
     this.containerElement = containerElement;
     this.onEndFetching = onEndFetching;
-    this.audioPlayer = new AudioPlayer();
 
     const gifDisplayElement = document.querySelector('#gif-display');
-    this.gifDisplay = new GifDisplay(gifDisplayElement, this.showAfterFetching);
+    this.gifDisplay = new GifDisplay(gifDisplayElement, this.onReadyToLoadImages, this.onReadyToLoadAudio);
+
+    this.audioPlayer = new AudioPlayer(this.onReadyToPlay);
 
     const playButtonElement = document.querySelector('footer img');
     this.playButton = new PlayButton(playButtonElement, (state) => {
@@ -35,14 +38,24 @@ class MusicScreen {
     this.gifDisplay.setTheme(this.source.theme);
   }
 
-  showAfterFetching(fetchingResult) {
+  onReadyToLoadImages(fetchingResult) {
     this.onEndFetching(fetchingResult);
     if (fetchingResult) {
-      this.containerElement.classList.remove('inactive');
-      this.audioPlayer.setSong(this.source.song);
-      this.audioPlayer.setKickCallback(() => { console.log('kick!'); this.gifDisplay.showDifferentGif(); });
-      this.audioPlayer.play();
+      this.gifDisplay.preloadImages();
     }
+  }
+
+  onReadyToLoadAudio() {
+    this.audioPlayer.setKickCallback(() => { console.log('kick!'); this.gifDisplay.showDifferentGif(); });
+    this.audioPlayer.setSong(this.source.song);
+  }
+
+  onReadyToPlay() {
+    console.log('Start playing');
+    const loading = document.querySelector('#loading');
+    loading.classList.toggle('inactive');
+    this.containerElement.classList.remove('inactive');
+    this.audioPlayer.play();
   }
 
   hide() {
