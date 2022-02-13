@@ -7,6 +7,9 @@ const GIPHY_API_URL = "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmz
 class GifDisplay {
   constructor(containerElement) {
     this.containerElement = containerElement;
+    this.foregroundContainer = containerElement.querySelector('#foreground');
+    this.backgroundContainer = containerElement.querySelector('#background');
+    this.swap = false;
     this.gifIndex = -1;
 
     this._onJsonReady = this._onJsonReady.bind(this);
@@ -21,19 +24,26 @@ class GifDisplay {
 
   _onJsonReady(json) {
     this.gifDatas = json.data;
-    this.showDifferentGif();
+    this._renderGif(this.foregroundContainer);
+    this._renderGif(this.backgroundContainer);
   }
 
   showDifferentGif() {
+    this.containerElement.classList.toggle('swap');
+    this.swap = !this.swap;
+    this._renderGif(this.swap ? this.foregroundContainer : this.backgroundContainer);
+  }
+
+  _getNewGifIndex() {
     let newGifIndex = null;
     do {
       newGifIndex = Math.floor(Math.random() * this.gifDatas.length);
     } while (newGifIndex === this.gifIndex);
     this.gifIndex = newGifIndex;
-    this._renderGif();
   }
 
-  _renderGif() {
-    this.containerElement.style.backgroundImage = 'url(\'' + this.gifDatas[this.gifIndex].images.downsized.url + '\')';
+  _renderGif(container) {
+    this._getNewGifIndex();
+    container.style.backgroundImage = 'url(\'' + this.gifDatas[this.gifIndex].images.downsized.url + '\')';
   }
 }

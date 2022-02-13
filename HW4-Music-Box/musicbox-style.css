@@ -9,12 +9,28 @@ TODO(you): Write any additional styles you need here.
 }
 
 #gif-display {
-  background-color: grey;
+  position: relative;
+  flex-grow: 1;
+  width: 100%;
+}
+
+.gif-layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  flex-grow: 1;
-  width: 100%;
+}
+
+#foreground {
+  z-index: 1;
+}
+
+.swap #background {
+  z-index: 2;
 }
 
 #music footer {
