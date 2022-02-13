@@ -5,8 +5,9 @@
 const GIPHY_API_URL = "https://api.giphy.com/v1/gifs/search?api_key=dc6zaTOxFJmzC&limit=25&rating=g&q="
 
 class GifDisplay {
-  constructor(containerElement) {
+  constructor(containerElement, onEndFetching) {
     this.containerElement = containerElement;
+    this.onEndFetching = onEndFetching;
     this.foregroundContainer = containerElement.querySelector('#foreground');
     this.backgroundContainer = containerElement.querySelector('#background');
     this.swap = false;
@@ -24,8 +25,12 @@ class GifDisplay {
 
   _onJsonReady(json) {
     this.gifDatas = json.data;
-    this._renderGif(this.foregroundContainer);
-    this._renderGif(this.backgroundContainer);
+    const fetchingResult = this.gifDatas.length >= 2;
+    this.onEndFetching(fetchingResult);
+    if (fetchingResult) {
+      this._renderGif(this.foregroundContainer);
+      this._renderGif(this.backgroundContainer);
+    }
   }
 
   showDifferentGif() {

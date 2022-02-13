@@ -6,16 +6,24 @@ class App {
   constructor() {
     // TODO(you): Implement the constructor and add fields as necessary.
     this.menuToMusic = this.menuToMusic.bind(this);
+    this.onReturn = this.onReturn.bind(this);
 
     const menuElement = document.querySelector('#menu');
     this.menuScreen = new MenuScreen(menuElement, this.menuToMusic);
 
     const musicElement = document.querySelector('#music');
-    this.musicScreen = new MusicScreen(musicElement);
+    this.musicScreen = new MusicScreen(musicElement, this.onReturn);
   }
   // TODO(you): Add methods as necessary.
   menuToMusic(menuResult) {
-    this.menuScreen.hide();
     this.musicScreen.show(menuResult);
+  }
+
+  onReturn(success) {
+    if (success) {
+      this.menuScreen.hide();
+    } else {
+      this.menuScreen.displayErrorMessage();
+    }
   }
 }

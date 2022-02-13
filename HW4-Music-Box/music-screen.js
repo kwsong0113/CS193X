@@ -8,13 +8,16 @@
 //
 // See HW4 writeup for more hints and details.
 class MusicScreen {
-  constructor(containerElement) {
+  constructor(containerElement, onEndFetching) {
     // TODO(you): Implement the constructor and add fields as necessary.
+    this.showAfterFetching = this.showAfterFetching.bind(this);
+
     this.containerElement = containerElement;
+    this.onEndFetching = onEndFetching;
     this.audioPlayer = new AudioPlayer();
 
     const gifDisplayElement = document.querySelector('#gif-display');
-    this.gifDisplay = new GifDisplay(gifDisplayElement);
+    this.gifDisplay = new GifDisplay(gifDisplayElement, this.showAfterFetching);
 
     const playButtonElement = document.querySelector('footer img');
     this.playButton = new PlayButton(playButtonElement, (state) => {
@@ -24,15 +27,22 @@ class MusicScreen {
         this.audioPlayer.play();
       }
     });
+
   }
   // TODO(you): Add methods as necessary.
   show(source) {
-    this.containerElement.classList.remove('inactive');
-    this.gifDisplay.setTheme(source.theme);
+    this.source = source;
+    this.gifDisplay.setTheme(this.source.theme);
+  }
 
-    this.audioPlayer.setSong(source.song);
-    this.audioPlayer.setKickCallback(() => { console.log('kick!'); this.gifDisplay.showDifferentGif(); });
-    this.audioPlayer.play();
+  showAfterFetching(fetchingResult) {
+    this.onEndFetching(fetchingResult);
+    if (fetchingResult) {
+      this.containerElement.classList.remove('inactive');
+      this.audioPlayer.setSong(this.source.song);
+      this.audioPlayer.setKickCallback(() => { console.log('kick!'); this.gifDisplay.showDifferentGif(); });
+      this.audioPlayer.play();
+    }
   }
 
   hide() {

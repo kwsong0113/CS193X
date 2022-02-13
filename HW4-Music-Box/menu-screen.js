@@ -8,6 +8,9 @@ const PREDEFINED_THEMES = ['candy', 'charlie brown', 'computers', 'dance', 'donu
 class MenuScreen {
   constructor(containerElement, onMenuSubmit) {
     // TODO(you): Implement the constructor and add fields as necessary.
+    this._onSubmit = this._onSubmit.bind(this);
+    this._onChange = this._onChange.bind(this);
+
     this.containerElement = containerElement;
     this.onMenuSubmit = onMenuSubmit;
 
@@ -16,7 +19,6 @@ class MenuScreen {
     this._fetchSongs();
     this._chooseRandomTheme();
 
-    this._onSubmit = this._onSubmit.bind(this);
     const form = document.querySelector('form');
     form.addEventListener('submit', this._onSubmit);
   }
@@ -28,6 +30,17 @@ class MenuScreen {
 
   hide() {
     this.containerElement.classList.add('inactive');
+  }
+
+  displayErrorMessage() {
+    const error = document.querySelector('#error');
+    error.classList.remove('inactive');
+    this.themeInput.addEventListener('input', this._onChange);
+  }
+
+  _onChange() {
+    error.classList.add('inactive');
+    this.themeInput.removeEventListener('input', this._onChange);
   }
 
   _onSubmit(event) {
